@@ -1,0 +1,36 @@
+type PasajeroDto {
+  id: ID!
+  username: String!
+  nombre: String
+  apellido: String
+  telefono: String
+  email: String
+  createdAt: String
+}
+
+input RegistroPasajeroInput {
+  username: String!
+  nombre: String!
+  apellido: String!
+  identificacion: String
+  telefono: String!
+  email: String!
+  password: String!
+  passwordConfirm: String!
+}
+
+type RegistroResponse {
+  success: Boolean!
+  message: String
+  pasajero: PasajeroDto
+}
+
+type Query {
+  checkEmail(email: String!): Boolean!       # true = disponible
+  checkUsername(username: String!): Boolean! # true = disponible
+  pasajeroById(id: ID!): PasajeroDto
+}
+
+type Mutation {
+  registerPasajero(input: RegistroPasajeroInput!): RegistroResponse!
+}
