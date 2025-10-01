@@ -8,4 +8,9 @@ public interface PasajeroService {
     boolean emailAvailable(String email);
     boolean usernameAvailable(String username);
     Pasajero findById(Long id);
+
+    Pasajero authenticate(String username, String password);
+    String generateToken(Pasajero pasajero);
+    boolean sendPasswordReset(String email);
+    void resetPassword(String token, String newPassword);
 }
