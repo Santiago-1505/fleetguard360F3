@@ -128,4 +128,5 @@ type Mutation {
   resetPassword(token: String!, newPassword: String!): Boolean!
 
   crearReserva(input: CrearReservaDto!, pasajeroId: ID!): ReservaResponse!
+  cancelarReserva(reservaId: ID!, pasajeroId: ID!): ReservaResponse!
 }

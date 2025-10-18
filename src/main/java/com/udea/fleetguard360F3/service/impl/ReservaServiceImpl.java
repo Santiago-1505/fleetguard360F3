@@ -24,10 +24,11 @@ public class ReservaServiceImpl implements ReservaService {
         this.viajeRepo = viajeRepo;
     }
 
+    @Override
     public List<Viaje> buscarViajes(String origen, String destino, LocalDate fecha) {
         return viajeRepo.findByOrigenAndDestinoAndFecha(origen, destino, fecha);
     }
-
+    @Override
     @Transactional
     public Reserva crearReserva(Pasajero pasajero, Long viajeId, List<PasajeroAdicional> adicionales, int cantidadAsientos) {
         Viaje viaje = viajeRepo.findById(viajeId)
@@ -44,7 +45,7 @@ public class ReservaServiceImpl implements ReservaService {
         reserva.setCantidadAsientos(cantidadAsientos);
         reserva.setFechaReserva(LocalDateTime.now());
         reserva.setCodigoReserva(UUID.randomUUID().toString());
-        reserva.setEstado("CONFIRMADA");
+        reserva.setEstado(Reserva.EstadoReserva.ACTIVA);
 
         if (adicionales != null) {
             adicionales.forEach(ad -> ad.setReserva(reserva));
@@ -58,9 +59,35 @@ public class ReservaServiceImpl implements ReservaService {
 
         return saved;
     }
-
+    @Override
     public List<Reserva> reservasPorPasajero(Long pasajeroId) {
         return reservaRepo.findByPasajeroId(pasajeroId);
+    }
+
+    @Override
+    @Transactional
+    public Reserva cancelarReserva(Long reservaId, Long pasajeroId) {
+        Reserva reserva = reservaRepo.findById(reservaId)
+                .orElseThrow(() -> new IllegalArgumentException("Reserva no encontrada"));
+
+        if (!reserva.getPasajero().getId().equals(pasajeroId)) {
+            throw new IllegalArgumentException("No tienes permiso para cancelar esta reserva.");
+        }
+
+        if (reserva.getEstado() != Reserva.EstadoReserva.ACTIVA) {
+            throw new IllegalArgumentException("Solo puedes cancelar reservas activas.");
+        }
+
+        Viaje viaje = reserva.getViaje();
+        viaje.setCuposDisponibles(viaje.getCuposDisponibles() + reserva.getCantidadAsientos());
+
+        reserva.setEstado(Reserva.EstadoReserva.CANCELADA);
+        reservaRepo.save(reserva);
+
+        sendEmail(reserva.getPasajero().getEmail(), "Reserva cancelada",
+                "Tu reserva con código " + reserva.getCodigoReserva() + " ha sido cancelada exitosamente.");
+
+        return reserva;
     }
 
     private void sendEmail(String to, String subject, String body) {

@@ -28,14 +28,18 @@ public class Reserva {
 
     private String codigoReserva;
 
-    private String estado;
+    //private String estado;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private EstadoReserva estado = EstadoReserva.ACTIVA;
 
 
     public Reserva() {
     }
 
     public Reserva(Long id, Pasajero pasajero, Viaje viaje, List<PasajeroAdicional> pasajerosAdicionales,
-                   int cantidadAsientos, LocalDateTime fechaReserva, String codigoReserva, String estado) {
+                   int cantidadAsientos, LocalDateTime fechaReserva, String codigoReserva, EstadoReserva estado) {
         this.id = id;
         this.pasajero = pasajero;
         this.viaje = viaje;
@@ -43,7 +47,7 @@ public class Reserva {
         this.cantidadAsientos = cantidadAsientos;
         this.fechaReserva = fechaReserva;
         this.codigoReserva = codigoReserva;
-        this.estado = estado;
+        this.estado = estado != null ? estado : EstadoReserva.ACTIVA;
     }
 
     public Long getId() {
@@ -102,11 +106,18 @@ public class Reserva {
         this.codigoReserva = codigoReserva;
     }
 
-    public String getEstado() {
+    public EstadoReserva getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoReserva estado) {
         this.estado = estado;
     }
+
+    public enum EstadoReserva {
+        ACTIVA,
+        CANCELADA,
+        FINALIZADA
+    }
 }
+

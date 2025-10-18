@@ -73,5 +73,15 @@ public class ReservaController {
         return reservaService.reservasPorPasajero(pasajeroId);
     }
 
+    @MutationMapping
+    public ReservaResponse cancelarReserva(@Argument Long reservaId, @Argument Long pasajeroId) {
+        try {
+            Reserva reserva = reservaService.cancelarReserva(reservaId, pasajeroId);
+            return new ReservaResponse(true, "Reserva cancelada exitosamente", reserva);
+        } catch (IllegalArgumentException ex) {
+            return new ReservaResponse(false, ex.getMessage(), null);
+        }
+    }
+
     public record ReservaResponse(boolean success, String message, Reserva reserva) {}
 }
