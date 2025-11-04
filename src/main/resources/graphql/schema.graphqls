@@ -31,9 +31,9 @@ type Reserva {
   cantidadAsientos: Int!
   estado: String!
   viaje: Viaje!
-  pasajeroPrincipal: PasajeroDto!
+  pasajero: PasajeroDto!
   pasajerosAdicionales: [PasajeroAdicional!]
-  createdAt: String
+  fechaReserva: String
 }
 
 input RegistroPasajeroInput {
@@ -62,6 +62,7 @@ type LoginResponse {
   success: Boolean!
   message: String
   token: String
+  pasajero: PasajeroDto
 
 }
 
@@ -112,12 +113,24 @@ type ReservaResponse {
   reserva: Reserva
 }
 
+type PosicionBus {
+  latitud: Float!
+  longitud: Float!
+  etaMinutos: Int!
+  ultimaActualizacion: String!
+}
+
+type Subscription {
+  busPositionUpdated(viajeId: ID!): PosicionBus!
+}
+
 type Query {
   checkEmail(email: String!): Boolean!
   checkUsername(username: String!): Boolean!
   pasajeroById(id: ID!): PasajeroDto
   buscarViajes(input: BuscarViajesInput!): [Viaje!]!
   misReservas(pasajeroId: ID!): [Reserva!]!
+
 }
 
 type Mutation {
@@ -125,7 +138,7 @@ type Mutation {
 
   login(input: LoginPasajeroInput!): LoginResponse!
   sendPasswordReset(email: String!): Boolean!
-  resetPassword(token: String!, newPassword: String!): Boolean!
+  resetPassword(input: ResetPasswordInput): ResetPasswordResponse!
 
   crearReserva(input: CrearReservaDto!, pasajeroId: ID!): ReservaResponse!
   cancelarReserva(reservaId: ID!, pasajeroId: ID!): ReservaResponse!

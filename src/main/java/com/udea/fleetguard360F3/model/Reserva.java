@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@Table(name = "reserva")
+
 public class Reserva {
 
     @Id
@@ -117,7 +119,8 @@ public class Reserva {
     public enum EstadoReserva {
         ACTIVA,
         CANCELADA,
-        FINALIZADA
+        FINALIZADA,
+        CONFIRMADA
     }
 }
 

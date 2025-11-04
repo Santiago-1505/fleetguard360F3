@@ -3,6 +3,8 @@ package com.udea.fleetguard360F3.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "pasajero_adicional")
+
 public class PasajeroAdicional {
 
     @Id

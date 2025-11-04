@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
+@Table(name = "viaje")
+
 public class Viaje {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

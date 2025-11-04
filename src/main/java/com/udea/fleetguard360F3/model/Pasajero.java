@@ -38,6 +38,8 @@ public class Pasajero {
     @Column(nullable=false)
     private Instant createdAt = Instant.now();
 
+    private String idiomaPreferido = "es";
+
     public Long getId() {
         return id;
     }
@@ -108,6 +110,14 @@ public class Pasajero {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getIdiomaPreferido() {
+        return idiomaPreferido;
+    }
+
+    public void setIdiomaPreferido(String idiomaPreferido) {
+        this.idiomaPreferido = idiomaPreferido;
     }
 }
 

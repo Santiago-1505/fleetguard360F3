@@ -108,7 +108,7 @@ public class PasajeroServiceImpl implements PasajeroService {
         resetTokens.put(token, p.getUsername());
 
         sendEmail(email, "Restablecer contraseña",
-                "Link: http://frontend/reset-password?token=" + token);
+                "http://localhost:8081/change-password?token=" + token);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
