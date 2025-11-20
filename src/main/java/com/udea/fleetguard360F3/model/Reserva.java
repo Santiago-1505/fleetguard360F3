@@ -24,6 +24,12 @@ public class Reserva {
     @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PasajeroAdicional> pasajerosAdicionales;
 
+    @Column(name = "alerta_enviada")
+    private boolean alertaEnviada = false;
+
+    @Column(name = "fecha_alerta")
+    private LocalDateTime fechaAlerta;
+
     private int cantidadAsientos;
 
     private LocalDateTime fechaReserva;
@@ -106,6 +112,22 @@ public class Reserva {
 
     public void setCodigoReserva(String codigoReserva) {
         this.codigoReserva = codigoReserva;
+    }
+
+    public boolean isAlertaEnviada() {
+        return alertaEnviada;
+    }
+
+    public void setAlertaEnviada(boolean alertaEnviada) {
+        this.alertaEnviada = alertaEnviada;
+    }
+
+    public LocalDateTime getFechaAlerta() {
+        return fechaAlerta;
+    }
+
+    public void setFechaAlerta(LocalDateTime fechaAlerta) {
+        this.fechaAlerta = fechaAlerta;
     }
 
     public EstadoReserva getEstado() {

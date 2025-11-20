@@ -60,14 +60,25 @@ public class BusTrackerSimulatorImpl {
 
             //  Enviar correo a los pasajeros
             for (Reserva reserva : reservas) {
-                if (eta <= 2 && reserva.getPasajero() != null && reserva.getPasajero().getEmail() != null) {
+                if (eta <= 2 && !reserva.isAlertaEnviada() && reserva.getEstado() == Reserva.EstadoReserva.ACTIVA && reserva.getPasajero() != null && reserva.getPasajero().getEmail() != null) {
                     String correo = reserva.getPasajero().getEmail();
                     String asunto = " Tu bus está por llegar";
                     String cuerpo = "Hola " + reserva.getPasajero().getNombre() +
                             ", tu bus del viaje #" + viajeId + " llegará en aproximadamente " + eta + " minutos.";
                     System.out.println("Enviando correo a " + correo + " para el viaje " + viajeId);
 
-                    emailService.sendEmailWithRetry(correo, asunto, cuerpo);
+                    try {
+                        emailService.sendEmailWithRetry(correo, asunto, cuerpo);
+
+                        // Marcar como enviada
+                        reserva.setAlertaEnviada(true);
+                        reserva.setFechaAlerta(LocalDateTime.now());
+                        reservaRepository.save(reserva);
+
+                        System.out.println(" Alerta enviada y registrada para reserva #" + reserva.getId());
+                    } catch (Exception e) {
+                        System.err.println(" Error al enviar alerta: " + e.getMessage());
+                    }
                 }
             }
 

@@ -38,6 +38,12 @@ public class Pasajero {
     @Column(nullable=false)
     private Instant createdAt = Instant.now();
 
+    @Column(name = "reset_token")
+    private String resetToken;
+
+    @Column(name = "reset_token_expiry")
+    private Instant resetTokenExpiry;
+
     private String idiomaPreferido = "es";
 
     public Long getId() {
@@ -118,6 +124,23 @@ public class Pasajero {
 
     public void setIdiomaPreferido(String idiomaPreferido) {
         this.idiomaPreferido = idiomaPreferido;
+
+    }
+
+    public String getResetToken() {
+        return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
+    }
+
+    public Instant getResetTokenExpiry() {
+        return resetTokenExpiry;
+    }
+
+    public void setResetTokenExpiry(Instant resetTokenExpiry) {
+        this.resetTokenExpiry = resetTokenExpiry;
     }
 }
 
