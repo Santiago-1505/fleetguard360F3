@@ -84,6 +84,15 @@ public class EncuestaSatisfaccionController {
     private Long obtenerPasajeroIdAutenticado() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+        System.out.println("DEBUG - Authentication: " + auth);
+        System.out.println("DEBUG - Is Authenticated: " + (auth != null ? auth.isAuthenticated() : "null"));
+        System.out.println("DEBUG - Principal: " + (auth != null ? auth.getPrincipal() : "null"));
+        System.out.println("DEBUG - Name: " + (auth != null ? auth.getName() : "null"));
+
+        if (auth == null || !auth.isAuthenticated()) {
+            throw new IllegalArgumentException("Usuario no autenticado");
+        }
+
         // Validar que existe autenticación
         if (auth == null || !auth.isAuthenticated()) {
             throw new IllegalArgumentException("Usuario no autenticado");

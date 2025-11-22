@@ -188,6 +188,7 @@ type Mutation {
   cancelarReserva(reservaId: ID!, pasajeroId: ID!): ReservaResponse!
 
   responderEncuesta(input: ResponderEncuestaInput!): ResponderEncuestaResponse!
+  actualizarEstadoViaje(viajeId: ID!, estado: String!): Viaje!
 }
 
 enum EstadoReserva {
